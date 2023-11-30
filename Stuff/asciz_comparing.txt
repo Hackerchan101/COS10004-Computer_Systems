@@ -1,0 +1,19 @@
+      MOV R0, #MyName
+      STR R0, .ReadString
+      MOV R2, #121
+      LDRB R2 , [R0]
+      CMP R0, R2
+      BEQ printY
+      BNE printN
+printY:
+      MOV R0, #yessir
+      STR R0, .WriteString
+      HALT
+printN:
+      MOV R0, #nossir
+      STR R0, .WriteString
+      HALT
+; Label
+MyName: .BLOCK 128
+yessir: .ASCIZ "yessir"
+nossir: .ASCIZ "nossir"

@@ -1,0 +1,25 @@
+;Write "remain"    
+      MOV R1, #remain
+      STR R1, .WriteString 
+;Write "15"
+      MOV R0, #15
+      STR R0, .WriteUnsignedNum
+;Go Down A Line for display purposes
+      MOV R1, #line
+      STR R1, .WriteString
+;Write Prompt "How many do you want to remove (1-3)?"
+      MOV R1, #RemovNumbPrompts 
+      STR R1, .WriteString
+;Read Input (1 - 3)
+      LDR R2, .InputNum
+;Calculate MatchStick left
+      SUB R0, R0, R2
+;Go Down A Line for display purposes
+      MOV R1, #line
+      STR R1, .WriteString
+;Display Remain Stick
+      STR R0, .WriteUnsignedNum
+      HALT
+remain: .ASCIZ "remain"
+line: .ASCIZ "\n"
+RemovNumbPrompts: .ASCIZ "How many do you want to remove (1-3)?"

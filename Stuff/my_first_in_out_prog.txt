@@ -1,0 +1,12 @@
+      MOV R0, #RequestName
+      STR R0, .WriteString
+      MOV R0, #name
+      STR R0, .ReadString
+      MOV R0, #yourname
+      STR R0, .WriteString
+      MOV R0, #name
+      STR R0, .WriteString
+      HALT
+RequestName: .ASCIZ "Enter your name: \n"
+name: .BLOCK 128
+yourname: .ASCIZ "Your name is "

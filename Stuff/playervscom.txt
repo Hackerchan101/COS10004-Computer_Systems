@@ -1,0 +1,62 @@
+      MOV R0, #15
+LOOP:
+      STR R0, .WriteSignedNum
+      MOV R1, #Remain
+      STR R1, .WriteString
+      MOV R12, #Turn1
+      STR R12, .WriteString
+      MOV R4, #0x0A
+      STRB R4, .WriteChar
+      MOV R2, #Remove
+      STR R2, .WriteString
+RANGE:
+      LDR R3, .InputNum
+      STR R3, .WriteSignedNum
+      CMP R3, #1
+      BLT RANGE
+      CMP R3, #3
+      BGT RANGE
+      MOV R4, #0x0A
+      STRB R4, .WriteChar
+SUB:
+      CMP R0, R3
+      BLT RANGE
+      SUB R0, R0, R3
+      CMP R0, #1
+      BLT STOP1
+      B SELECT
+SELECT: 
+      LDR R10, .Random
+      AND R10, R10, #0b11
+      CMP R10, #0
+      BEQ SELECT
+      CMP R0, R10
+      BLT SELECT
+      MOV R11, #Turn2
+      STR R11, .WriteString
+      MOV R4, #0x0A
+      STRB R4, .WriteChar
+      SUB R0, R0, R10
+      CMP R0, #1
+      BLT STOP2
+      B LOOP
+STOP2:
+      STR R0, .WriteSignedNum
+      MOV R1, #Remain
+      STR R1, .WriteString
+      MOV R5, #Win1
+      STR R5, .WriteString
+      HALT
+STOP1:
+      STR R0, .WriteSignedNum
+      MOV R1, #Remain
+      STR R1, .WriteString
+      MOV R5, #Win2
+      STR R5, .WriteString
+      HALT
+Remain: .ASCIZ "remaining\n"
+Remove: .ASCIZ "How many do you want to remove (1-3)?"
+Turn1: .ASCIZ "It's your turn"
+Turn2: .ASCIZ "It's COM turn"
+Win1: .ASCIZ "You WIN!!!"
+Win2: .ASCIZ "COM WIN!!!"

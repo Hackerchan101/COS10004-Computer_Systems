@@ -1,0 +1,76 @@
+      MOV R0, #15       ; Load in 15 Stick
+      B main
+main:
+      MOV R1, #remain   ; Display "remain"
+      STR R1, .WriteString
+      STR R0, .WriteUnsignedNum ; Display number of remaining sticks
+      MOV R1, #line     ; Go down a line
+      STR R1, .WriteString
+      MOV R1, #RemovNumbPrompts ; Display remove prompt
+      STR R1, .WriteString
+      LDR R2, .InputNum ; Get the input
+      STR R2, .WriteUnsignedNum ; Display Input
+      CMP R2, #3
+      BLT Case
+      BGT Invalid
+      BEQ Case
+Invalid:
+      MOV R1, #line
+      STR R1, .WriteString ; Go down a line
+      MOV R1, #line
+      STR R1, .WriteString ; Go down a line
+      MOV R1, #InvalidPrompt
+      STR R1, .WriteString ; Display Invalid Prompt
+      STR R2, .WriteUnsignedNum ; Display Input
+      MOV R1, #line
+      STR R1, .WriteString ; Go down a line
+      B main
+Case:
+      CMP R2, #1
+      BGT skip
+      BLT Invalid
+      BEQ skip
+skip:
+      SUB R0, R0, R2    ; Calculate the remaining sticks
+      CMP R0, #0
+      BEQ ComputerWin
+      BLT ComputerWin
+      B Select
+Select:
+      LDR R2, .Random
+      AND R2, R2, #3
+      CMP R0, R2
+      BLT Select
+      SUB R0, R0, R2
+      CMP R0, #0
+      BEQ PlayerWin
+      BLT PlayerWin
+      B main
+ComputerWin:
+      MOV R1, #line
+      STR R1, .WriteString ; Go down a line
+      MOV R1, #line
+      STR R1, .WriteString ; Go down a line
+      MOV R1, #line
+      STR R1, .WriteString ; Go down a line
+      MOV R1, #ComputerWon
+      STR R1, .WriteString ; Computer won
+      B end
+PlayerWin:
+      MOV R1, #line
+      STR R1, .WriteString ; Go down a line
+      MOV R1, #line
+      STR R1, .WriteString ; Go down a line
+      MOV R1, #line
+      STR R1, .WriteString ; Go down a line
+      MOV R1, #PlayerWon
+      STR R1, .WriteString ; Player won
+      B end
+end:
+      halt
+remain: .ASCIZ "remain"
+line: .ASCIZ "\n"
+InvalidPrompt: .ASCIZ "Please input again (1-3)"
+RemovNumbPrompts: .ASCIZ "How many do you want to remove (1-3)?"
+ComputerWon: .ASCIZ "Sorry, You lost"
+PlayerWon: .ASCIZ "Congrats, You win"
